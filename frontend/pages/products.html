@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - AdaptNxt E-commerce</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="../index.html">AdaptNxt</a>
+            </div>
+            <div class="nav-links">
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+                <a href="orders.html">Orders</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="products-header">
+            <h1>Products</h1>
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search products..." class="search-input">
+                <button id="searchBtn" class="btn btn-secondary">Search</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="categoryFilter">Category:</label>
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="sortBy">Sort By:</label>
+                <select id="sortBy">
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                    <option value="createdAt">Date Added</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="loadingMessage" class="loading-message">Loading products...</div>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        
+        <div id="productsGrid" class="products-grid"></div>
+        
+        <div class="pagination">
+            <button id="prevPage" class="btn btn-secondary">Previous</button>
+            <span id="pageInfo"></span>
+            <button id="nextPage" class="btn btn-secondary">Next</button>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/cart.js"></script>
+    <script>
+        // Initialize products page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!Auth.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize components
+            Products.init();
+            Cart.updateCartCount();
+
+            // Setup logout
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                Auth.logout();
+                window.location.href = '../index.html';
+            });
+
+            // Setup search
+            document.getElementById('searchBtn').addEventListener('click', performSearch);
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Setup filters
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+            document.getElementById('sortBy').addEventListener('change', applyFilters);
+
+            // Setup pagination
+            document.getElementById('prevPage').addEventListener('click', () => Products.previousPage());
+            document.getElementById('nextPage').addEventListener('click', () => Products.nextPage());
+        });
+
+        function performSearch() {
+            const searchTerm = document.getElementById('searchInput').value;
+            Products.search(searchTerm);
+        }
+
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const sortBy = document.getElementById('sortBy').value;
+            Products.applyFilters(category, sortBy);
+        }
+
+        // addToCart function is defined in cart.js as a global function
+    </script>
+</body>
+</html>

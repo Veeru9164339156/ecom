@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdaptNxt E-commerce</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Enhanced Landing Page Styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: rgb(230, 227, 233);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover {
+            background: #f8f9fa;
+            color: #667eea;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #2b4b46 100%);
+            color: white;
+            padding: 120px 0 80px;
+            text-align: center;
+            margin-top: 70px;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        
+        .cta-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .cta-primary {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .cta-secondary {
+            background: white;
+            color: #667eea;
+        }
+        
+        .demo-info {
+            background: #87a5a3;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            margin: 3rem auto;
+            max-width: 1000px;
+            border-left: 5px solid #2196f3;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .demo-section h4 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .demo-section ol {
+            margin-left: 1.5rem;
+        }
+        
+        .demo-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .features {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-card h3 {
+            color: #333;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-online {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .status-offline {
+            background: #f44336;
+            color: white;
+        }
+        
+        .server-status {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .nav-container {
+                padding: 0 1rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">🛍️ AdaptNxt</a>
+            <div class="nav-links" id="navLinks">
+                <!-- Navigation will be populated by JavaScript -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>“Bringing the Market to Your Doorstep – Welcome!”</h1>
+            <p>Perfect for fashion or lifestyle-based ecommerce.
+                Highlight: New arrivals, lookbooks, style guides.</p>
+            <div class="cta-buttons" id="heroButtons">
+                <!-- Buttons will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Server Status -->
+        <div class="server-status">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <span>Backend Server:</span>
+                <span class="status-badge" id="serverStatus">Checking...</span>
+                <span id="serverUrl">http://localhost:8083</span>
+            </div>
+        </div>
+
+        <!-- Demo Information -->
+        <div class="demo-info">
+            <h3>🚀 Quick Start Guide</h3>
+            <div class="demo-grid">
+                <!-- Customer Section -->
+                <div class="demo-section">
+                    <h4>🛍️ Customer Journey</h4>
+                    <ol>
+                        <li><strong>Sign Up:</strong> Create a new user account</li>
+                        <li><strong>Login:</strong> Access your personalized dashboard</li>
+                        <li><strong>Explore:</strong> Browse categories or search products</li>
+                        <li><strong>Purchase:</strong> Add items to cart and complete checkout</li>
+                        <li><strong>Track Orders:</strong> Monitor your purchase history and order status</li>
+                    </ol>
+                </div>
+        
+                <!-- Admin Section -->
+                <div class="demo-section">
+                    <h4>🛠️ Admin Workflow</h4>
+                    <ol>
+                        <li><strong>Create Admin:</strong> Set up a demo admin account</li>
+                        <li><strong>Login:</strong> Use admin credentials to enter the dashboard</li>
+                        <li><strong>Manage Content:</strong> Add, edit, or remove products</li>
+                        <li><strong>Handle Orders:</strong> View and update order statuses</li>
+                        <li><strong>Analytics:</strong> Monitor performance with real-time data</li>
+                    </ol>
+                    <button id="createAdminBtn" class="cta-btn cta-primary" style="margin-top: 1rem;">
+                        Create Demo Admin
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 1rem; font-size: 2.5rem;">Why Choose AdaptNxt?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛒</div>
+                    <h3>Smart Shopping</h3>
+                    <p>Advanced search, filters, pagination, and real-time cart updates for seamless shopping experience</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📍</div>
+                    <h3>Order Tracking</h3>
+                    <p>Track order status from placement to doorstep delivery in real time</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🖥️</div>
+                    <h3>User Interface</h3>
+                    <p>Simple and intuitive design for seamless shopping experience across devices</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure & Fast</h3>
+                    <p>JWT authentication, role-based access control, and encrypted data protection</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Responsive Design</h3>
+                    <p>Beautiful, modern interface that works perfectly on all devices and screen sizes</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Admin Dashboard</h3>
+                    <p>Comprehensive tools for managing products, orders, users, and system analytics</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Initialize the landing page
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerStatus();
+            updateNavigation();
+            updateHeroButtons();
+            setupEventListeners();
+        });
+
+        async function checkServerStatus() {
+            const statusElement = document.getElementById('serverStatus');
+            try {
+                const response = await fetch('http://localhost:8083/api/products');
+                if (response.ok) {
+                    statusElement.textContent = 'Online';
+                    statusElement.className = 'status-badge status-online';
+                } else {
+                    throw new Error('Server error');
+                }
+            } catch (error) {
+                statusElement.textContent = 'Offline';
+                statusElement.className = 'status-badge status-offline';
+            }
+        }
+
+        function updateNavigation() {
+            const navLinks = document.getElementById('navLinks');
+            
+            try {
+                // Check if Auth object exists
+                if (typeof Auth === 'undefined') {
+                    console.warn('Auth object not loaded, showing guest navigation');
+                    showGuestNavigation(navLinks);
+                    return;
+                }
+                
+                if (Auth.isAuthenticated()) {
+                    const user = Auth.getCurrentUser();
+                    if (user && user.role === 'ADMIN') {
+                        navLinks.innerHTML = `
+                            <a href="pages/admin.html">Admin Dashboard</a>
+                            <a href="pages/products.html">Shop</a>
+                            <a href="#" onclick="logout()">Logout (${user.firstName || user.username})</a>
+                        `;
+                    } else {
+                        navLinks.innerHTML = `
+                            <a href="pages/products.html">Shop</a>
+                            <a href="pages/cart.html">Cart</a>
+                            <a href="pages/orders.html">Orders</a>
+                            <a href="#" onclick="logout()">Logout (${user ? (user.firstName || user.username) : 'User'})</a>
+                        `;
+                    }
+                } else {
+                    showGuestNavigation(navLinks);
+                }
+            } catch (error) {
+                console.error('Error updating navigation:', error);
+                showGuestNavigation(navLinks);
+            }
+        }
+
+        function showGuestNavigation(navLinks) {
+            navLinks.innerHTML = `
+                <a href="pages/login.html">Login</a>
+                <a href="pages/register.html">Register</a>
+            `;
+        }
+
+        function updateHeroButtons() {
+            const heroButtons = document.getElementById('heroButtons');
+            
+            if (Auth.isAuthenticated()) {
+                const user = Auth.getCurrentUser();
+                if (user.role === 'ADMIN') {
+                    heroButtons.innerHTML = `
+                        <a href="pages/admin.html" class="cta-btn cta-primary">Admin Dashboard</a>
+                        <a href="pages/products.html" class="cta-btn cta-secondary">Browse Products</a>
+                    `;
+                } else {
+                    heroButtons.innerHTML = `
+                        <a href="pages/products.html" class="cta-btn cta-primary">Start Shopping</a>
+                        <a href="pages/cart.html" class="cta-btn cta-secondary">View Cart</a>
+                    `;
+                }
+            } else {
+                heroButtons.innerHTML = `
+                    <a href="pages/register.html" class="cta-btn cta-primary">Get Started</a>
+                    <a href="pages/login.html" class="cta-btn cta-secondary">Login</a>
+                `;
+            }
+        }
+
+        function setupEventListeners() {
+            const createAdminBtn = document.getElementById('createAdminBtn');
+            createAdminBtn.addEventListener('click', createDemoAdmin);
+        }
+
+        async function createDemoAdmin() {
+            const btn = document.getElementById('createAdminBtn');
+            const originalText = btn.textContent;
+            btn.textContent = 'Creating...';
+            btn.disabled = true;
+
+            try {
+                const adminData = {
+                    firstName: 'Admin',
+                    lastName: 'User',
+                    username: 'admin',
+                    email: 'admin@adaptnxt.com',
+                    password: 'admin123',
+                    address: 'Admin Office, AdaptNxt HQ'
+                };
+
+                const response = await api.postPublic('/api/auth/register', adminData);
+                
+                if (response.message === 'User registered successfully') {
+                    alert(`✅ Demo Admin Created Successfully!
+
+👤 Username: admin
+📧 Email: admin@adaptnxt.com
+🔑 Password: admin123
+
+⚠️ Note: Please manually update the role in your database:
+UPDATE users SET role = 'ADMIN' WHERE email = 'admin@adaptnxt.com';
+
+Then refresh and login with username: admin`);
+                }
+            } catch (error) {
+                if (error.message.includes('already exists')) {
+                    alert(`✅ Demo Admin Already Exists!
+
+� Username: admin
+�📧 Email: admin@adaptnxt.com  
+🔑 Password: admin123
+
+You can login directly with username: admin`);
+                } else {
+                    alert('❌ Error creating admin: ' + error.message);
+                }
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function logout() {
+            Auth.logout();
+            location.reload();
+        }
+    </script>
+</body>
+</html>

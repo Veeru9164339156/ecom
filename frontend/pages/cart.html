@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - AdaptNxt E-commerce</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <a href="../index.html">AdaptNxt</a>
+            </div>
+            <div class="nav-links">
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart (<span id="cartCount">0</span>)</a>
+                <a href="orders.html">Orders</a>
+                <a href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Shopping Cart</h1>
+        
+        <div id="loadingMessage" class="loading-message">Loading cart...</div>
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+        
+        <div id="cartContainer">
+            <div id="cartItems" class="cart-items"></div>
+            
+            <div id="cartSummary" class="cart-summary" style="display: none;">
+                <h3>Order Summary</h3>
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (10%):</span>
+                    <span id="tax">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">$0.00</span>
+                </div>
+                <button id="checkoutBtn" class="btn btn-primary">Proceed to Checkout</button>
+            </div>
+            
+            <div id="emptyCart" class="empty-cart" style="display: none;">
+                <h3>Your cart is empty</h3>
+                <p>Add some products to your cart to see them here.</p>
+                <a href="products.html" class="btn btn-primary">Continue Shopping</a>
+            </div>
+        </div>
+
+        <!-- Checkout Modal -->
+        <div id="checkoutModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Checkout</h3>
+                    <span class="close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label for="shippingAddress">Shipping Address:</label>
+                            <textarea id="shippingAddress" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method:</label>
+                            <select id="paymentMethod" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="CREDIT_CARD">Credit Card</option>
+                                <option value="DEBIT_CARD">Debit Card</option>
+                                <option value="UPI">UPI</option>
+                                <option value="CASH_ON_DELIVERY">Cash on Delivery</option>
+                            </select>
+                        </div>
+                        <div class="order-summary">
+                            <h4>Order Summary</h4>
+                            <div class="summary-row">
+                                <span>Total:</span>
+                                <span id="checkoutTotal">$0.00</span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Place Order</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/cart.js"></script>
+    <script src="../js/orders.js"></script>
+    <script>
+        // Initialize cart page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!Auth.isAuthenticated()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Initialize components
+            Cart.init();
+            Cart.updateCartCount();
+
+            // Setup logout
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                Auth.logout();
+                window.location.href = '../index.html';
+            });
+
+            // Setup checkout
+            document.getElementById('checkoutBtn').addEventListener('click', openCheckoutModal);
+            
+            // Setup modal
+            const modal = document.getElementById('checkoutModal');
+            const closeModal = modal.querySelector('.close');
+            closeModal.addEventListener('click', closeCheckoutModal);
+            
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    closeCheckoutModal();
+                }
+            });
+
+            // Setup checkout form
+            document.getElementById('checkoutForm').addEventListener('submit', handleCheckout);
+
+            // Load user's address
+            loadUserAddress();
+        });
+
+        function openCheckoutModal() {
+            const total = Cart.getCartTotal();
+            document.getElementById('checkoutTotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('checkoutModal').style.display = 'block';
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').style.display = 'none';
+        }
+
+        async function loadUserAddress() {
+            try {
+                const user = Auth.getCurrentUser();
+                if (user && user.address) {
+                    document.getElementById('shippingAddress').value = user.address;
+                }
+            } catch (error) {
+                console.error('Error loading user address:', error);
+            }
+        }
+
+        async function handleCheckout(event) {
+            event.preventDefault();
+            
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            try {
+                const orderData = {
+                    shippingAddress,
+                    paymentMethod
+                };
+                
+                const success = await Orders.createOrder(orderData);
+                if (success) {
+                    closeCheckoutModal();
+                    alert('Order placed successfully!');
+                    // Clear cart and redirect to orders
+                    await Cart.clearCart();
+                    window.location.href = 'orders.html';
+                }
+            } catch (error) {
+                alert('Error placing order: ' + error.message);
+            }
+        }
+
+        // Global functions for cart item management
+        window.updateQuantity = function(productId, quantity) {
+            Cart.updateItemQuantity(productId, quantity);
+        };
+
+        window.removeFromCart = function(productId) {
+            Cart.removeItem(productId);
+        };
+    </script>
+</body>
+</html>
